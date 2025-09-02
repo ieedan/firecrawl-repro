@@ -1,4 +1,4 @@
-import Firecrawl from "@mendable/firecrawl-js";
+import Firecrawl from "firecrawl";
 import fs from "fs";
 import "dotenv/config";
 import * as z from "zod";
@@ -42,4 +42,10 @@ console.log("Writing last result to file...");
 
 fs.writeFileSync("last-result.json", JSON.stringify(result.json, null, 2));
 
-console.log("Done!");
+const validated = schema.safeParse(result.json);
+
+if (!validated.success) {
+	console.log("Invalid JSON result", validated.error);
+} else {
+	console.log("Valid JSON result", validated.data);
+}
